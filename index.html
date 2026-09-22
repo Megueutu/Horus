@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DITE | Corretor Automático</title>
+  <style>
+    :root {
+      --orange-1: #ff8a00;
+      --orange-2: #ffb347;
+      --dark: #232323;
+      --bg: #f7f7f8;
+      --card-bg: #ffffff;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-img {
+      height: 56px;
+    }
+
+    .logo-fallback {
+      align-items: center;
+      gap: 4px;
+    }
+
+    .logo-d {
+      font-size: 40px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--orange-1), var(--orange-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .logo-text {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .logo-text small {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #666;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .upload-card,
+    .result-card,
+    .error-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 48px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .upload-card h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 32px;
+    }
+
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 40px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, var(--orange-1), var(--orange-2));
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 6px 20px rgba(255, 138, 0, 0.35);
+    }
+
+    .upload-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(255, 138, 0, 0.45);
+    }
+
+    .upload-btn:active {
+      transform: translateY(0);
+    }
+
+    .file-name {
+      margin-top: 16px;
+      color: #444;
+      font-size: 14px;
+      word-break: break-all;
+    }
+
+    .loading {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #666;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid #eee;
+      border-top-color: var(--orange-1);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .score-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 10px solid var(--orange-1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 20px auto;
+    }
+
+    .score-circle span {
+      font-size: 38px;
+      font-weight: 800;
+    }
+
+    .score-circle small {
+      color: #888;
+    }
+
+    .result-list {
+      list-style: none;
+      padding: 0;
+      margin: 24px 0;
+      text-align: left;
+    }
+
+    .result-list li {
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      background: #f6f6f7;
+    }
+
+    .result-list li.ok {
+      border-left: 4px solid #2ecc71;
+    }
+
+    .result-list li.fail {
+      border-left: 4px solid #e74c3c;
+    }
+
+    .result-list li .points {
+      white-space: nowrap;
+      font-weight: 700;
+      color: #555;
+    }
+
+    .secondary-btn {
+      margin-top: 8px;
+      padding: 12px 28px;
+      border-radius: 50px;
+      border: 2px solid var(--orange-1);
+      background: transparent;
+      color: var(--orange-1);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255, 138, 0, 0.08);
+    }
+
+    .error-card h2 {
+      color: #e74c3c;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 16px;
+      color: #999;
+      font-size: 13px;
+    }
+  </style>
+
+  <!-- Bibliotecas via CDN (sem build/framework) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="logo-wrap">
+      <img src="assets/logo.png" alt="DITE - Fundamentos Digitais" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';" />
+      <div id="logo-fallback" class="logo-fallback" style="display:none;">
+        <span class="logo-d">D</span>
+        <span class="logo-text">ITE<small>FUNDAMENTOS DIGITAIS</small></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="upload-card">
+      <h1>Correção Automática</h1>
+      <p class="subtitle">Envie o arquivo .zip com a estrutura esperada para receber sua pontuação.</p>
+
+      <label for="file-input" class="upload-btn" id="upload-btn">
+        <span id="upload-btn-label">Enviar arquivo .zip</span>
+      </label>
+      <input type="file" id="file-input" accept=".zip" hidden />
+
+      <p id="file-name" class="file-name"></p>
+
+      <div id="loading" class="loading" hidden>
+        <div class="spinner"></div>
+        <span>Analisando arquivo...</span>
+      </div>
+    </section>
+
+    <section id="result" class="result-card" hidden>
+      <h2>Resultado</h2>
+      <div class="score-circle" id="score-circle">
+        <span id="score-value">0</span>
+        <small>/ 100</small>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+      <button id="reset-btn" class="secondary-btn">Enviar outro arquivo</button>
+    </section>
+
+    <section id="error" class="error-card" hidden>
+      <h2>Erro</h2>
+      <p id="error-message"></p>
+      <button id="error-reset-btn" class="secondary-btn">Tentar novamente</button>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>DITE &middot; Fundamentos Digitais</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
