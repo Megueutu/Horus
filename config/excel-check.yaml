@@ -1,0 +1,16 @@
+# Verificações de célula dentro do Excel.
+# pagina: nome da aba (sheet) dentro do arquivo .xlsx
+# coluna: letra da coluna (ex: "A", "B", "C"...)
+# linha: número da linha (1 = primeira linha)
+# conteudo_esperado: valor que deve estar na célula
+
+verificacoes:
+  - pagina: "Plan1"
+    coluna: "A"
+    linha: 1
+    conteudo_esperado: "Fundamentos Digitais"
+
+  - pagina: "Plan1"
+    coluna: "B"
+    linha: 2
+    conteudo_esperado: "Aprovado"

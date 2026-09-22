@@ -1,0 +1,48 @@
+# Estrutura esperada dentro do ZIP enviado.
+# Ajuste os nomes de pastas/arquivos aqui sem precisar mexer no código.
+
+pasta_raiz: "pasta1"
+pontos_pasta_raiz: 5
+
+pastas:
+  powerpoint:
+    nome: "powerpoint"
+    extensao_esperada: ".pptx"
+    pontos_existencia: 5
+    pontos_nome_correto: 5
+  docx:
+    nome: "docx"
+    extensao_esperada: ".docx"
+    pontos_existencia: 5
+    pontos_nome_correto: 5
+  excel:
+    nome: "excel"
+    extensao_esperada: [".xlsx", ".xls"]
+    pontos_existencia: 5
+    pontos_nome_correto: 5
+
+# Pontuação por verificar se as 3 pastas existem na organização certa (dentro de pasta_raiz)
+pontos_organizacao: 15
+
+verificacao_conteudo:
+  powerpoint:
+    # PPTX só verifica se o arquivo existe e o nome bate (nada de conteúdo interno)
+    pontos: 10
+  docx:
+    pontos: 20
+  excel:
+    pontos: 20
+
+# Textos usados pela interface. {placeholders} são substituídos em tempo de execução.
+textos:
+  erro_config: "Não foi possível carregar o arquivo de configuração: {path}"
+  erro_generico: "Não foi possível processar o arquivo."
+  check_pasta_raiz: 'Pasta raiz "{pasta}" existe'
+  check_pasta_existe: 'Pasta "{pasta}" existe'
+  check_arquivo_correto: 'Arquivo correto ({extensoes}) dentro de "{pasta}"'
+  check_organizacao: "Organização das pastas dentro da estrutura esperada"
+  check_pptx: "PowerPoint: arquivo .pptx presente"
+  check_docx_resultado: "Conteúdo do DOCX ({encontrados}/{total} termos encontrados)"
+  check_docx_ausente: "Conteúdo do DOCX"
+  check_excel_resultado: "Conteúdo do Excel ({encontrados}/{total} células corretas)"
+  check_excel_ausente: "Conteúdo do Excel"
